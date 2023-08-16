@@ -1,3 +1,3 @@
-module github.com/hidez8891/shm
+module github.com/kokororin/shm
 
-go 1.13
+go 1.19

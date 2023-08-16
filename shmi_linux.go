@@ -1,4 +1,4 @@
-// +build linux,cgo
+//go:build linux
 
 package shm
 
@@ -83,7 +83,7 @@ func create(name string, size int32) (*shmi, error) {
 
 	fd := C.Create(C.CString(name), C.int(size))
 	if fd < 0 {
-		return nil, fmt.Errorf("create")
+		return nil, fmt.Errorf("create failed: %d", int(fd))
 	}
 
 	v := C.Map(fd, C.int(size))
@@ -101,7 +101,7 @@ func open(name string, size int32) (*shmi, error) {
 
 	fd := C.Open(C.CString(name), C.int(size))
 	if fd < 0 {
-		return nil, fmt.Errorf("open")
+		return nil, fmt.Errorf("open failed: %d", int(fd))
 	}
 
 	v := C.Map(fd, C.int(size))

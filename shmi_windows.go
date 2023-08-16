@@ -1,3 +1,5 @@
+//go:build windows
+
 package shm
 
 import (
@@ -28,7 +30,7 @@ func create(name string, size int32) (*shmi, error) {
 
 	v, err := syscall.MapViewOfFile(h, syscall.FILE_MAP_WRITE, 0, 0, 0)
 	if err != nil {
-		syscall.CloseHandle(h)
+		_ = syscall.CloseHandle(h)
 		return nil, os.NewSyscallError("MapViewOfFile", err)
 	}
 
@@ -42,11 +44,11 @@ func open(name string, size int32) (*shmi, error) {
 
 func (o *shmi) close() error {
 	if o.v != uintptr(0) {
-		syscall.UnmapViewOfFile(o.v)
+		_ = syscall.UnmapViewOfFile(o.v)
 		o.v = uintptr(0)
 	}
 	if o.h != syscall.InvalidHandle {
-		syscall.CloseHandle(o.h)
+		_ = syscall.CloseHandle(o.h)
 		o.h = syscall.InvalidHandle
 	}
 	return nil

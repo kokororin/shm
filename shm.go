@@ -1,7 +1,7 @@
 package shm
 
 import (
-	"fmt"
+	"errors"
 	"io"
 )
 
@@ -66,7 +66,7 @@ func (o *Memory) Seek(offset int64, whence int) (int64, error) {
 		offset += int64(o.m.size)
 	}
 	if offset < 0 || offset >= int64(o.m.size) {
-		return 0, fmt.Errorf("invalid offset")
+		return 0, errors.New("invalid offset")
 	}
 	o.pos = offset
 	return offset, nil
